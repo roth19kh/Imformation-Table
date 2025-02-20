@@ -5,9 +5,11 @@
 package information;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.sun.java.accessibility.util.SwingEventMonitor;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -50,6 +52,8 @@ public class EditInformation extends javax.swing.JFrame {
         tblDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Edit Information");
+        setName("Edit Information"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -92,7 +96,7 @@ public class EditInformation extends javax.swing.JFrame {
             }
         });
 
-        btnUpdate.setBackground(java.awt.Color.darkGray);
+        btnUpdate.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btnUpdate.setText("Update");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +127,11 @@ public class EditInformation extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblInformation);
+        tblInformation.getSelectionModel().addListSelectionListener((e) -> {
+            tableSelectionChanged(e);
+        });
 
+        tblDelete.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.custom.borderColor"));
         tblDelete.setText("Delete");
         tblDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,13 +166,13 @@ public class EditInformation extends javax.swing.JFrame {
                                 .addComponent(rdFemale)
                                 .addGap(18, 18, 18)
                                 .addComponent(rdOther)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tblDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack)
                     .addComponent(btnUpdate))
-                .addGap(49, 49, 49))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(28, 28, 28))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,26 +283,7 @@ public class EditInformation extends javax.swing.JFrame {
 
     private void tblInformationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformationMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tblUpdateModel = (DefaultTableModel) tblInformation.getModel();
-        
-        String id = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 0).toString();
-        String name = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 1).toString();
-        String gender = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 2).toString();
-        String address = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 3).toString();
-        
-        txtIdEdit.setText(id);
-        txtNameEdit.setText(name);
-        txtAddressEdit.setText(address);
-        
-        if(gender.equals("Male")){
-            rdMale.setSelected(true);
-        }
-        else if (gender.equals("Female")){
-            rdFemale.setSelected(true);
-        }
-        else if (gender.equals("Gay as FUCK!!")){
-            rdOther.setSelected(true);
-        }
+       
     }//GEN-LAST:event_tblInformationMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -323,9 +312,40 @@ public class EditInformation extends javax.swing.JFrame {
             else
                 JOptionPane.showMessageDialog(this, "Please select.");
         }
-        
     }//GEN-LAST:event_tblDeleteActionPerformed
 
+    private void tableSelectionChanged(ListSelectionEvent evt){
+        
+        if(!tblInformation.getSelectionModel().isSelectionEmpty()){
+            
+            DefaultTableModel tblUpdateModel = (DefaultTableModel) tblInformation.getModel();
+
+            String id = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 0).toString();
+            String name = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 1).toString();
+            String gender = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 2).toString();
+            String address = tblUpdateModel.getValueAt(tblInformation.getSelectedRow(), 3).toString();
+
+            txtIdEdit.setText(id);
+            txtNameEdit.setText(name);
+            txtAddressEdit.setText(address);
+
+            if(gender.equals("Male")){
+                rdMale.setSelected(true);
+            }
+            else if (gender.equals("Female")){
+                rdFemale.setSelected(true);
+            }
+            else if (gender.equals("Gay as FUCK!!")){
+                rdOther.setSelected(true);
+            }
+        }else {
+        txtIdEdit.setText("");
+        txtNameEdit.setText("");
+        txtAddressEdit.setText("");
+        buttonGroup1.clearSelection();
+    }
+
+    }
     /**
      * @param args the command line arguments
      */
