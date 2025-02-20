@@ -107,7 +107,15 @@ public class EditInformation extends javax.swing.JFrame {
             new String [] {
                 "ID", "Name", "Gender", "Address"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblInformation.setUpdateSelectionOnSort(false);
         tblInformation.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -161,7 +169,7 @@ public class EditInformation extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
@@ -206,13 +214,12 @@ public class EditInformation extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel tblUpdateModel = (DefaultTableModel) tblInformation.getModel();
         
         if(tblInformation.getSelectedRowCount()==1){
         
             String id = txtIdEdit.getText();
             String name = txtNameEdit.getText();
-            String gender="";
+            String gender;
             String address = txtAddressEdit.getText();
 
             if (rdMale.isSelected()){
@@ -229,15 +236,12 @@ public class EditInformation extends javax.swing.JFrame {
             tblInformation.setValueAt(gender, tblInformation.getSelectedRow(), 2);
             tblInformation.setValueAt(address, tblInformation.getSelectedRow(), 3);
             
-            
-            JOptionPane.showMessageDialog(this, "Update success!");
-            
             txtIdEdit.setText("");
             txtNameEdit.setText("");
-            rdMale.setSelected(false);
-            rdFemale.setSelected(false);
-            rdOther.setSelected(false);
+            buttonGroup1.clearSelection();
             txtAddressEdit.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Update success!");
         }
         else{
             if(tblInformation.getRowCount()==0){
@@ -304,6 +308,13 @@ public class EditInformation extends javax.swing.JFrame {
         
         if (tblInformation.getSelectedRowCount() ==1){
             modDelete.removeRow(tblInformation.getSelectedRow());
+            
+            txtIdEdit.setText("");
+            txtNameEdit.setText("");
+            buttonGroup1.clearSelection();
+            txtAddressEdit.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Deleted!");
         }
         else{
             if(tblInformation.getRowCount()==0){
@@ -312,6 +323,7 @@ public class EditInformation extends javax.swing.JFrame {
             else
                 JOptionPane.showMessageDialog(this, "Please select.");
         }
+        
     }//GEN-LAST:event_tblDeleteActionPerformed
 
     /**

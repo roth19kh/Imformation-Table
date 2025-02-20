@@ -22,7 +22,7 @@ public class Information extends javax.swing.JFrame {
     public Information() {
         initComponents();
     }
-    EditInformation RowInformation = new EditInformation();
+
     private void addItemsToTable()
     {
         String id = txtId.getText().trim();
@@ -31,8 +31,8 @@ public class Information extends javax.swing.JFrame {
             if (modDuplicate.getValueAt(i, 0).toString().equals(id)) {
                 JOptionPane.showMessageDialog(this, "Duplicate ID detected!", "Attention", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
         }
-    }
         String name = txtName.getText().trim();
         String gender = "";
         if(rdMale.isSelected()){
@@ -59,7 +59,6 @@ public class Information extends javax.swing.JFrame {
             rdMale.setSelected(true);
             txtAddress.setText("");
         }
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,7 +100,15 @@ public class Information extends javax.swing.JFrame {
             new String [] {
                 "ID", "Name", "Gender", "Address"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblInformation.setUpdateSelectionOnSort(false);
         tblInformation.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -260,7 +267,6 @@ public class Information extends javax.swing.JFrame {
         EditInformation editForm = new EditInformation();
         DefaultTableModel mod2 = (DefaultTableModel) editForm.tblInformation.getModel();
         for (int i =0; i <count; i++){
-            
             row[0] =tblMod.getValueAt(i, 0);
             row[1] =tblMod.getValueAt(i, 1);
             row[2] =tblMod.getValueAt(i, 2);
