@@ -240,30 +240,45 @@ public class EditInformation extends javax.swing.JFrame {
         if(tblInformation.getSelectedRowCount()==1){
         
             String id = txtIdEdit.getText();
-            String name = txtNameEdit.getText();
-            String gender;
-            String address = txtAddressEdit.getText();
+            DefaultTableModel modDuplicate = (DefaultTableModel) tblInformation.getModel();
+            boolean isDuplicate = false;
+            int selectedRow = tblInformation.getSelectedRow();
 
-            if (rdMale.isSelected()){
-                gender="Male";
+            for (int i = 0; i < modDuplicate.getRowCount(); i++) {
+                if (i != selectedRow && modDuplicate.getValueAt(i, 0).toString().equals(id)) {
+                    isDuplicate = true;
+                    break;
+                }
             }
-            else if (rdFemale.isSelected()){
-                gender="Female";
+            if (isDuplicate) {
+                JOptionPane.showMessageDialog(this, "Update failed." ," Attention",JOptionPane.WARNING_MESSAGE);
+            } else {
+                String name = txtNameEdit.getText();
+                String gender;
+                String address = txtAddressEdit.getText();
+
+                if (rdMale.isSelected()){
+                    gender="Male";
+                }
+                else if (rdFemale.isSelected()){
+                    gender="Female";
+                }
+                else {
+                    gender="Gay as FUCK!!";
+                }
+                tblInformation.setValueAt(id, tblInformation.getSelectedRow(), 0);
+                tblInformation.setValueAt(name, tblInformation.getSelectedRow(), 1);
+                tblInformation.setValueAt(gender, tblInformation.getSelectedRow(), 2);
+                tblInformation.setValueAt(address, tblInformation.getSelectedRow(), 3);
+
+                txtIdEdit.setText("");
+                txtNameEdit.setText("");
+                buttonGroup1.clearSelection();
+                txtAddressEdit.setText("");
+                tblInformation.clearSelection();
+
+                JOptionPane.showMessageDialog(this, "Update success!");
             }
-            else {
-                gender="Gay as FUCK!!";
-            }
-            tblInformation.setValueAt(id, tblInformation.getSelectedRow(), 0);
-            tblInformation.setValueAt(name, tblInformation.getSelectedRow(), 1);
-            tblInformation.setValueAt(gender, tblInformation.getSelectedRow(), 2);
-            tblInformation.setValueAt(address, tblInformation.getSelectedRow(), 3);
-            
-            txtIdEdit.setText("");
-            txtNameEdit.setText("");
-            buttonGroup1.clearSelection();
-            txtAddressEdit.setText("");
-            
-            JOptionPane.showMessageDialog(this, "Update success!");
         }
         else{
             if(tblInformation.getRowCount()==0){
@@ -271,7 +286,7 @@ public class EditInformation extends javax.swing.JFrame {
             }
             else
                 JOptionPane.showMessageDialog(this, "Please select to update.");
-        }    
+            }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
