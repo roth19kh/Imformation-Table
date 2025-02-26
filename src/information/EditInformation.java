@@ -236,9 +236,8 @@ public class EditInformation extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        
         if(tblInformation.getSelectedRowCount()==1){
-        
+            
             String id = txtIdEdit.getText();
             DefaultTableModel modDuplicate = (DefaultTableModel) tblInformation.getModel();
             boolean isDuplicate = false;
@@ -252,7 +251,8 @@ public class EditInformation extends javax.swing.JFrame {
             }
             if (isDuplicate) {
                 JOptionPane.showMessageDialog(this, "Update failed." ," Attention",JOptionPane.WARNING_MESSAGE);
-            } else {
+            }
+            else {
                 String name = txtNameEdit.getText();
                 String gender;
                 String address = txtAddressEdit.getText();
@@ -276,7 +276,7 @@ public class EditInformation extends javax.swing.JFrame {
                 buttonGroup1.clearSelection();
                 txtAddressEdit.setText("");
                 tblInformation.clearSelection();
-
+                
                 JOptionPane.showMessageDialog(this, "Update success!");
             }
         }
